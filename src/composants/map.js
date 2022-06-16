@@ -5,6 +5,16 @@ import communeSen from "./../data/communeSen.json";
 import limDistrict from "./../data/limDistrict.json";
 import { MapContainer, GeoJSON, TileLayer, Marker, Popup, useMapEvents, LayersControl, } from 'react-leaflet'
 //import mapData from "./data/contries.json";
+// import MeasureControl from 'react-leaflet-measure';
+// const measureOptions = {
+//   position: 'topright',
+//   primaryLengthUnit: 'meters',
+//   secondaryLengthUnit: 'kilometers',
+//   primaryAreaUnit: 'sqmeters',
+//   secondaryAreaUnit: 'acres',
+//   activeColor: '#db4a29',
+//   completedColor: '#9b2d14'
+// };
 function LocationMarker() {
     const [position, setPosition] = useState(null);
     
@@ -121,8 +131,8 @@ function MyMap() {
         }
 
         );
-        setLieux(response.data)
-        listToSet(response.data);
+        setLieux(response.data.results)
+        listToSet(response.data.results);
         
     }
     const getLieux = async () => {
@@ -132,9 +142,9 @@ function MyMap() {
         }
 
         );
-        setLieux(response.data);
+        setLieux(response.data.results);
 
-        listToSet(response.data);
+        listToSet(response.data.results);
         
 
         console.log(lieux)
@@ -255,7 +265,8 @@ function MyMap() {
                                         </Popup>
                                     </Marker>
                                 )
-                            })
+                            }
+                            )
                         }
 
                         <LocationMarker />

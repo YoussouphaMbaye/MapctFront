@@ -1,51 +1,51 @@
-import React from "react";
-function Gallery(){
-    return(
-        <>
-        <div class="row mt-4">
-  <div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
-    <img
-      src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(73).webp"
-      class="w-100 shadow-1-strong rounded mb-4"
-      alt="Boat on Calm Water"
-    />
+import React, { useEffect,useState } from "react";
+import axios  from "axios";
+function Gallery() {
+    const [lieux, setLieux] = useState([]);
+    const [selectedPhoto,setSelectedPhoto]= useState(null);
+    const [lat,setLat]= useState('');
+    const [lng,setLng]= useState('');
+    const baseURL = 'http://127.0.0.1:8000/api/';
+    const getLieux = async () => {
+        const response = await axios.get(baseURL + "lieux/").catch((err) => {
+            console.log(err);
+        }
+      );
+      setLieux(response.data.results);
+  }
+  useEffect(()=>{
+    getLieux();
 
-    <img
-      src="https://mdbcdn.b-cdn.net/img/Photos/Vertical/mountain1.webp"
-      class="w-100 shadow-1-strong rounded mb-4"
-      alt="Wintry Mountain Landscape"
-    />
-  </div>
+  })
+  const handleClick=(e)=>{
+    if(e.target.classList.contains('backdrop')){
+      setSelectedPhoto(null);
+    }
+  }
+  const selectImg=(url,lat,long)=>{
+   setSelectedPhoto(url);
+   setLat(lat);
+   setLng(long)
+  }
 
-  <div class="col-lg-4 mb-4 mb-lg-0">
-    <img
-      src="https://mdbcdn.b-cdn.net/img/Photos/Vertical/mountain2.webp"
-      class="w-100 shadow-1-strong rounded mb-4"
-      alt="Mountains in the Clouds"
-    />
-
-    <img
-      src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(73).webp"
-      class="w-100 shadow-1-strong rounded mb-4"
-      alt="Boat on Calm Water"
-    />
-  </div>
-
-  <div class="col-lg-4 mb-4 mb-lg-0">
-    <img
-      src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/Nature/4-col/img%20(18).webp"
-      class="w-100 shadow-1-strong rounded mb-4"
-      alt="Waves at Sea"
-    />
-
-    <img
-      src="https://mdbcdn.b-cdn.net/img/Photos/Vertical/mountain3.webp"
-      class="w-100 shadow-1-strong rounded mb-4"
-      alt="Yosemite National Park"
-    />
-  </div>
-</div>
-        </>
-    )
+  return (
+    <>
+    <div className="container-fluid pt-5  ">
+      <div className="row">
+                {lieux.length > 0 ? lieux.map((l) => {
+                  return <div className="col-lg-4 col-md-6 col-sm-12 mb-2 mt-5" onClick={()=>selectImg(l.photos,l.longitude,l.latitude)}>
+                    <img src={l.photos} className="img-fluid im-lieu w-100"/>
+                    </div>
+                })
+                :""}
+      </div>
+      {selectedPhoto?<div className="col-md-12 backdrop mt-5" onClick={(e)=>handleClick(e)}>
+        <img className="w-100" src={selectedPhoto}/>
+        <p>Latitude: {lat} Longitude: {lng}</p>
+      </div>:""}
+      </div>
+     
+    </>
+  )
 }
 export default Gallery;

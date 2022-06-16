@@ -6,22 +6,24 @@ function Comments(props) {
   const baseUrl = 'http://127.0.0.1:8000/api/';
   const [listComments, setListComments] = useState([]);
   const [listPage, setListPage] = useState([]);
-  const [nbItems, setNbItems] = useState();
+  const [nbItems, setNbItems] = useState(0);
   const [repEtat, setRepEtat] = useState(false);
   const [idC, setIdC] = useState(0);
   const [pageCount, setPageCount] = useState(0);
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const [itemOffset, setItemOffset] = useState(0);
   const limit=4;
 
   const handlePageClick = (e,i) => {
     console.log('nnnnnnnnnn')
     console.log(i)
-
     setCurrentPage(i);
-    getComments();
 
   }
+  //imediate change of currentPage
+  useEffect(()=>{
+    getComments();
+  },[currentPage])
   const repondez = async (id) => {
     setIdC(id);
     await setRepEtat(true);
@@ -38,8 +40,9 @@ function Comments(props) {
   //http://127.0.0.1:8000/api/cmmentaires/?limit=2&offset=1
   const getComments = async () => {
     console.log('run getcomments.......')
-    let mComments = [];
-    const response = await axios.get(baseUrl + 'cmmentaires/?ordering=-update_at&id=&commentaire=&lieu=' + props.lieux.id + '&limit='+limit+'&offset=' + currentPage+'/').catch((err) => {
+    let mComments = []
+    let aa=(currentPage>1)?'&page=' + currentPage:"";
+    const response = await axios.get(baseUrl + 'cmmentaires/?id=&commentaire=&lieu=' + props.lieux.id+'&count='+limit+'&page=' + currentPage+'&ordering=-update_at/').catch((err) => {
       console.log(err);
     });
     console.log(response.data.results);
@@ -52,23 +55,25 @@ function Comments(props) {
 
     }
     setListPage(pages);
-
-    if (response.data.results.length > 0) {
-      for (let c of response.data.results) {
-        console.log(c);
-        await axios.get(baseUrl + 'reponses/?commentaire=' + c['id'] + '&ordering=-update_at/').then((rep) => {
-          console.log(rep.data);
-          c['rep'] = rep.data
-          mComments.push(c);
-
-        }).catch((err) => {
-          console.log(err);
-        });
+    if (response.data.results){
+      if (response.data.results.length > 0) {
+        for (let c of response.data.results) {
+          console.log(c);
+          await axios.get(baseUrl + 'reponses/?commentaire=' + c['id'] + '&ordering=-update_at/').then((rep) => {
+            console.log(rep.data);
+            c['rep'] = rep.data
+            mComments.push(c);
+  
+          }).catch((err) => {
+            console.log(err);
+          });
+        }
+        console.log(mComments);
+        setListComments(mComments);
+  
       }
-      console.log(mComments);
-      setListComments(mComments);
-
     }
+
   }
   useEffect(() => {
 
@@ -163,14 +168,14 @@ function Comments(props) {
                       {listPage.length>1?
                       <nav aria-label="Page navigation example">
                         <ul class="pagination">
-                          {currentPage-1>=0?
+                          {(currentPage - 1)>0?
                           <li class="page-item"><button class="page-link"  onClick={(e)=>handlePageClick(e,currentPage - 1)} >Previous</button></li>
                           :""}
                         
                           {listPage.map((p,i)=>{
-                            return <li class="page-item"><button class="page-link"  onClick={(e)=>handlePageClick(e,p)} key={i}>{p+1}</button></li>
+                            return <li class={(p+1==currentPage)?"active page-item":"page-item"}><button class="page-link"  onClick={(e)=>handlePageClick(e,p+1)} key={i}>{p+1}</button></li>
                           })}
-                          {(currentPage+1)<pageCount?
+                          {(currentPage+1<=pageCount)?
                           <li><button class="page-link"  onClick={(e)=>handlePageClick(e,currentPage+1)} >Next</button></li>
                           :""}
                         </ul>

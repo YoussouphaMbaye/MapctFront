@@ -17,19 +17,25 @@ function Lieux() {
     const [commune, setCommune] = useState("");
     const [type, setType] = useState("");
     const [pageCount, setPageCount] = useState(0);
-    const [currentPage, setCurrentPage] = useState(0);
-    const [nbItems, setNbItems] = useState();
+    const [currentPage, setCurrentPage] = useState(1);
+    const [nbItems, setNbItems] = useState(1);
     const [listPage, setListPage] = useState([]);
+    
     const limit=3;
     const secParam = useParams('secteur');
-    const handlePageClick = (e,i) => {
-        console.log('nnnnnnnnnn')
+    const handlePageClick = async(e,i) => {
+        console.log('lahilahilalah')
         console.log(i)
     
-        setCurrentPage(i);
-        getLieuxWithFilter(secteur,departement,region);
+        await setCurrentPage(i);
+        console.log(currentPage)
+        
     
       }
+      //imediate change of currentPage
+      useEffect(()=>{
+        getLieuxWithFilter(secteur,departement,region,type);
+      },[currentPage])
     //list et quantité par secteur
     const listToSet = (data) => {
         if (data.length > 0) {
@@ -63,22 +69,20 @@ function Lieux() {
     }
     const regChange = (reg) => {
         setRegion(reg);
-        getLieuxWithFilter(secteur, departement, reg)
+        getLieuxWithFilter(secteur, departement, reg,type)
     }
     const depChange = (dep) => {
         setDepartement(dep);
-        getLieuxWithFilter(secteur, dep, region)
+        getLieuxWithFilter(secteur, dep, region,type)
     }
     const secChange = (sec) => {
         setSecteur(sec);
-        getLieuxWithFilter(sec, departement, region)
+        getLieuxWithFilter(sec, departement, region,type)
     }
     const getLieuxWithFilter = async (secteur, dep, reg,type) => {
-
-        const response = await axios.get(baseURL + "lieux/?secteur=" + secteur + "&type="+type+"&departement=" + dep + "&region=" + reg+'&limit='+limit+'&offset=' + currentPage + '&ordering=-update_at/').catch((err) => {
+        const response = await axios.get(baseURL + "lieux/?secteur=" + secteur + "&type="+type+"&departement=" + dep + "&region=" + reg+'&count='+limit+'&page=' + currentPage + '&ordering=-update_at/').catch((err) => {
             console.log(err);
         }
-
         );
         setLieux(response.data.results)
         listToSet(response.data.results);
@@ -90,23 +94,22 @@ function Lieux() {
         let a=Math.ceil(response.data.count/limit);
         console.log(a+"mmmmmmmmmmm");
         for(let i=0;i<a;i++){
-        pages.push(i);
-
+            pages.push(i);
         }
         setListPage(pages);
-
+        setPageCount(Math.ceil(response.data.count / limit));
         //gestion pagination
     }
     const getLieux = async () => {
 
-        const response = await axios.get(baseURL + "lieux/").catch((err) => {
+        const response = await axios.get(baseURL + "lieux?ordering=-update_at/").catch((err) => {
             console.log(err);
         }
 
         );
-        setLieux(response.data);
+        setLieux(response.data.results);
 
-        listToSet(response.data);
+        listToSet(response.data.results);
 
         console.log(lieux)
         console.log(response.data)
@@ -115,6 +118,7 @@ function Lieux() {
     useEffect(() => {
         //getLieux();
         console.log(secParam)
+        
         console.log('layhila))))))))))))))))))))))))))))))))))))))))))))))))))s')
         console.log(secParam.secteur)
         if(secParam.secteur && secParam.type){
@@ -124,10 +128,12 @@ function Lieux() {
             if(secParam.secteur!='secteur'){
                 setSecteur(secParam.secteur)
                 getLieuxWithFilter(secParam.secteur,departement,region,type);
+                
             }else if(secParam.type!='type'){
                 setType(secParam.type)
                 console.log(secParam.type)
                 getLieuxWithFilter(secteur,departement,region,secParam.type);
+                
             }else if(secParam.type!='type' && secParam.secteur!='secteur'){
                 setType(secParam.type)
                 setSecteur(secParam.secteur)
@@ -214,7 +220,7 @@ function Lieux() {
                             <div className="post" data-aos="fade-up" data-aos-duration="1000">
                                 <img className="img-fluid im-lieu w-100" src={l.photos} alt="Blog" />
                                 <div className="post_inner py-3">
-                                    <p className="mb-1 font-weight-bold">13th March,2019 </p>
+                                    {/* <p className="mb-1 font-weight-bold">13th March,2019 </p> */}
                                     <h5 className="font-weight-bold">{l.nom}</h5>
                                     <p>{(l.description!=null)?l.description.substring(0,65):""}...</p>
                                     {/* <div className="comment d-flex">
@@ -233,14 +239,14 @@ function Lieux() {
                  <div className="mx-auto d-flex justify-content-center">
                       <nav aria-label="Page navigation example mx-auto">
                         <ul class="pagination">
-                          {currentPage-1>=0?
-                          <li class="page-item"><button class="page-link"  onClick={(e)=>handlePageClick(e,currentPage - 1)} >Previous</button></li>
+                          {(currentPage - 1>0)?
+                          <li class="page-item"><button class="page-link"  onClick={(e)=>handlePageClick(e,currentPage-1)} >Previous</button></li>
                           :""}
                         
                           {listPage.length>1?listPage.map((p,i)=>{
-                            return <li class="page-item"><button class="page-link"  onClick={(e)=>handlePageClick(e,p)} key={i}>{p+1}</button></li>
+                            return <li class={(p+1==currentPage)?"active page-item":"page-item"}><button class="page-link"  onClick={(e)=>handlePageClick(e,p+1)} key={i}>{p+1}</button></li>
                           }):''}
-                          {(currentPage+1)<pageCount?
+                          {(currentPage+1<=pageCount)?
                           <li><button class="page-link"  onClick={(e)=>handlePageClick(e,currentPage+1)} >Next</button></li>
                           :""}
                         </ul>

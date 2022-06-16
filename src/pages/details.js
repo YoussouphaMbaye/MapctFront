@@ -32,7 +32,7 @@ function Details() {
             }
             );
             console.log('hier hier hier')
-            setLieuxDuType(response2.data);
+            setLieuxDuType(response2.data.results);
             console.log(response2.data)
         }
     }
@@ -61,8 +61,8 @@ function Details() {
             console.log(err);
         }
         );
-        setLesLieux(response.data);
-        listToSet(response.data);
+        setLesLieux(response.data.results);
+        listToSet(response.data.results);
         
         console.log(response.data);
         listToSet(response.data);
@@ -88,20 +88,14 @@ function Details() {
                         </div>
                         <div className="lieux-desc pt-1">
                             <p>
-                                Lorem Ipsum is simply dummy text of the printing and
-                                typesetting industry. Lorem Ipsum has been the industry's
-                                standard dummy text ever since the 1500s, when an unknown
-                                printer took a galley of type and scrambled it to make
-                                a type specimen book. It has survived not only five
-                                centuries, but also the leap into electronic typesetting,
-                                remaining essentially unchanged.
+                                {lieu.description}
                             </p>
                         </div>
                         <Comments lieux={lieu} />
                     </div>
 
                     <div className="col-md-4">
-                        <div className="search-blog mb-4">
+                        <div className="search-blog mb-2">
                             <form>
                                 <label className="sr-only" for="inlineFormInputGroupUsername2">Username</label>
                                 <div className="input-group mb-2 mr-sm-2">
@@ -128,10 +122,10 @@ function Details() {
                             </MapContainer>
                         </div>
                         <div className="blog-category mb-3">
-                            <h6 className="text-uppercase font-weight-bold mb-3">Blog Category</h6>
+                            <h6 className="text-uppercase font-weight-bold mb-1">Types de lieux</h6>
                             <ul class="list-group list-group-flush">
                             {(listSecteur.size > 0) ?
-                            (Array.from(listSecteur).map((s, i) => {
+                            (Array.from(listType).map((s, i) => {
 
                                 console.log(s)
                                 return <li class="list-group-item d-flex justify-content-between align-items-center px-0  py-2">
@@ -147,11 +141,11 @@ function Details() {
                             </ul>
                         </div>
                         <div className="recent-blog ">
-                            <h6 className="text-uppercase font-weight-bold mb-3">Autres lieux</h6>
+                            <h6 className="text-uppercase font-weight-bold ">Autres lieux</h6>
                             {lieuDuType.length>0 ? lieuDuType.map((l) => {
                                 return <Link to={"/detais/"+l.id} style={{ textDecoration: 'none',color:'black' }}><div class="d-flex mb-2">
                                             <div class="flex-shrink-0">
-                                                <img src={l.photos} alt="..." />
+                                                <img src={l.photos} alt="..." className="small-img"/>
                                             </div>
                                             <div class="flex-grow-1 ms-3 text-media">
                                                 <h5>{l.nom}</h5>
@@ -163,7 +157,7 @@ function Details() {
 
                         </div>
                         <div className="tags pt-3">
-                            <h6 className="text-uppercase font-weight-bold">Tags</h6>
+                            <h6 className="text-uppercase font-weight-bold">Secteurs d'activité</h6>
                             {(listSecteur.size > 0) ?
                             (Array.from(listSecteur).map((s, i) => {
 

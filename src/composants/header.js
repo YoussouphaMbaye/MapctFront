@@ -25,13 +25,13 @@ function Header() {
                 <NavLink to='/lieux' className="nav-link" aria-current="page" >Lieux</NavLink>
               </li>
               <li className="nav-item">
-                <NavLink to='/' className="nav-link" >A propos</NavLink>
+                <NavLink to='/apropos' className="nav-link" >A propos</NavLink>
               </li>
               <li className="nav-item">
                 <NavLink to='/gallery' className="nav-link">Gallery</NavLink>
               </li>
               <li className="nav-item">
-                <NavLink to='/' className="nav-link" >Contact</NavLink>
+                <NavLink to='/contact' className="nav-link" >Contact</NavLink>
                 </li>
               <li className="nav-item">
                 <NavLink to='/' className="nav-link" >
