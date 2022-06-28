@@ -3,6 +3,7 @@ import './App.css';
 import { Route, BrowserRouter as Router, Routes,Link } from 'react-router-dom';
 import Header from './composants/header';
 import Home from './pages/home';
+import Home2 from './pages/home2';
 import Details from './pages/details';
 import './App.css';
 import MyMap from './composants/map';
@@ -18,7 +19,7 @@ function App() {
         <Router>
           <Header/>
           <Routes>
-          <Route exact path="/" element={<Home/>} />
+          <Route exact path="/" element={<Home2/>} />
           <Route exact path="/details/:id" element={<Details/>} />
           <Route exact path="/map" element={<MyMap/>}/>
           {/* paramettres facultatifs */}

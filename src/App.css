@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,700&display=swap');
 .navbar{
     color:#D8D8D8;
     box-shadow:0px 5px 10px rgba(0,0,0,0.7) 
@@ -110,6 +111,7 @@ form .input-group-text{
    height: 100%;
    background: rgba(0,0,0,0.5);
    padding-top: 90px;
+   z-index: 55;
  }
  .backdrop img{
    display: block;
@@ -127,4 +129,97 @@ form .input-group-text{
  }
  .small-img{
    height: 10vh;
+ }
+ .hslide{
+   position: relative;
+   color: #fff;
+ }
+ .titre1{
+   position: absolute;
+   left:5%;
+   top:25%;
+   width:500px;
+   margin: 0 auto;
+ }
+ .btn-title{
+   border: solid 1px coral;
+   border-radius: 17px;
+   padding: 5px 15px;
+   text-decoration: none;
+   color: white;
+   box-shadow: 5px 5px 1px bisque;
+   box-shadow: 2px 3px 1px bisque;
+ }
+ .btn-title:hover{
+  border: solid 1px coral;
+  border-radius: 17px;
+  padding: 5px 15px;
+  text-decoration: none;
+  color: white;
+  box-shadow: 5px 5px 1px bisque;
+  box-shadow: 2px 3px 1px bisque;
+  color: #000;
+  background-color: #fff;
+}
+ .btn-titl2{
+  border: solid 1px coral;
+  border-radius: 17px;
+  padding: 5px 15px;
+  text-decoration: none;
+  background-color: coral;
+  color: white;
+  box-shadow: 2px 3px 3px bisque;
+  transition-duration: .5s;
+}
+.btn-titl2:hover{
+  border: solid 1px coral;
+  border-radius: 17px;
+  padding: 5px 15px;
+  text-decoration: none;
+  color: #000;
+  background-color: #fff;
+  box-shadow: 2px 3px 3px bisque;
+  
+}
+.hslide h3,.hslide p{
+  font-family: 'Playfair Display', serif;
+}
+.im-gallery{
+  cursor: pointer;
+}
+.partage{
+  display: flex;
+  justify-content: flex-start;
+}
+.partage{
+  padding-right: 5px;
+}
+.ic-partage{
+  height: 40px;
+  text-align: center;
+  background-color: coral;
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ color: #fff;
+ 
+  
+}
+.ic-partage i{
+  display: inline-block;
+}
+.contact-side{
+  background-color: #ebeff1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  
+}
+.link-utils{
+ text-decoration: none;
+}
+@media (max-width: 700px) {
+  .titre1{
+    display: none;
+  }
  }

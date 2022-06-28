@@ -1,3 +1,4 @@
+import logo from "../imgs/logo.png";
 function Contact() {
     return <div classNameName="container mt-5">
         <div classNameName=" ">
@@ -11,7 +12,8 @@ function Contact() {
 
             <div className="row">
 
-                <div className="col-md-9 mb-md-0 mb-5">
+                <div className="col-md-7 mb-md-0 mb-5">
+                    <img src={logo} className="mx-auto w-100"/>
                     <form id="contact-form" name="contact-form" action="mail.php" method="POST">
 
                         <div className="row">
@@ -60,25 +62,25 @@ function Contact() {
                     </form>
 
                     <div className="text-center text-md-left">
-                        <a className="btn btn-primary" onclick="document.getElementById('contact-form').submit();">Envoyer</a>
+                        <a className="btn bg-orange" onclick="document.getElementById('contact-form').submit();">Envoyer</a>
                     </div>
                     <div className="status"></div>
                 </div>
 
 
 
-                <div className="col-md-3 text-center">
+                <div className="col-md-5 text-center contact-side">
                     <ul className="list-unstyled mb-0">
                         <li><i className="fa fa-map-marker fa-2x color-orange"></i>
-                            <p>San Francisco, CA 94126, USA</p>
+                            <p>Avenue des Grands-Hommes, Ndioloféne derrière Plan International,<br/> Saint-Louis – Sénégal</p>
                         </li>
 
                         <li><i className="fa fa-phone mt-4 fa-2x color-orange"></i>
-                            <p>+ 01 234 567 89</p>
+                            <p>Tél : +221 33 961 28 23/778302335</p>
                         </li>
 
                         <li><i className="fa fa-envelope mt-4 fa-2x color-orange"></i>
-                            <p>contact@mdbootstrap.com</p>
+                            <p>contact@geomatica-services.com</p>
                         </li>
                     </ul>
                 </div>
